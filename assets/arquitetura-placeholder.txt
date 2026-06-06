@@ -1,0 +1,17 @@
+Diagrama inicial em Mermaid para copiar em docs/arquitetura.md ou em uma ferramenta compativel.
+
+```mermaid
+flowchart TD
+  A[Administrador] --> B[App Web]
+  C[Usuario / Motorista] --> B
+  B --> D[API Backend]
+  E[Carregador] --> F[Ingestao de Dados]
+  G[CSV / Lancamento Manual] --> F
+  F --> D
+  D --> H[(Banco de Dados)]
+  D --> I[Motor de Rateio]
+  I --> J[Relatorios]
+  H --> J
+  H --> K[Modulo de IA]
+  K --> L[Alertas e Insights]
+```
