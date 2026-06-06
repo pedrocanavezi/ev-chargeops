@@ -1,10 +1,10 @@
 # Sprint 02
 
-Esta pasta concentra o plano de desenvolvimento da Sprint 02 do EV ChargeOps.
+Esta pasta guarda o plano de desenvolvimento da proxima sprint do EV ChargeOps.
 
 ## Objetivo
 
-Organizar as tarefas para transformar a documentacao inicial em um MVP simples, com cadastro, registro de sessoes de recarga, calculo de rateio e relatorio basico.
+Sair da pesquisa da Sprint 01 e montar um MVP simples. A prioridade e provar o fluxo principal: cadastro, registro/importacao de sessoes, calculo de rateio e relatorio mensal.
 
 ## Arquivos
 
@@ -15,10 +15,10 @@ Organizar as tarefas para transformar a documentacao inicial em um MVP simples, 
 ## Como alterar
 
 1. Abra `plano-desenvolvimento.md`.
-2. Ajuste o escopo conforme o que sera entregue.
+2. Ajuste o escopo conforme a entrega combinada.
 3. Marque o que entra ou sai da sprint.
 4. Atualize criterios de aceite antes de iniciar desenvolvimento.
-5. Use o README da raiz para manter a visao geral do projeto.
+5. Mantenha o README da raiz como visao geral do projeto.
 
 ## Entregas esperadas
 
@@ -27,4 +27,4 @@ Organizar as tarefas para transformar a documentacao inicial em um MVP simples, 
 - Importacao CSV de sessoes.
 - Calculo de rateio por kWh e taxa operacional.
 - Relatorio mensal simples.
-- Documentacao das premissas e limites do MVP.
+- Documentacao das premissas, limites e integracoes futuras.

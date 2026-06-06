@@ -2,35 +2,45 @@
 
 Equipe: Pedro Henrique Canavezi - RM 570298
 
-Projeto de referencia para planejar uma operacao de recarga de veiculos eletricos em condominios, frotas, estacionamentos ou pontos comerciais, com recorte tecnico para o desafio GoodWe.
+Este repositorio documenta a Sprint 01 do EV ChargeOps, uma proposta para controlar sessoes de recarga de veiculos eletricos em locais compartilhados. O recorte usado no trabalho e o desafio GoodWe, considerando o carregador HCA G2 como equipamento de referencia.
 
-O repositorio organiza a entrega da Sprint 01: contexto do problema, pesquisa de mercado, base regulatoria e tecnica, arquitetura, modelo de rateio, papel da IA, fontes consultadas e plano de desenvolvimento para a Sprint 02.
+A ideia ainda nao e criar o sistema completo. Nesta sprint eu organizei o problema, as pesquisas, as decisoes tecnicas iniciais e um caminho realista para a Sprint 02.
 
-## Problema
+## Problema e contexto
 
-A instalacao de carregadores de veiculos eletricos em condominios, estacionamentos, campus e pequenas frotas cria um problema operacional: quem usou, quanto consumiu, qual tarifa deve ser aplicada e como justificar o rateio de energia para usuarios e administradores.
+O problema principal nao e apenas instalar um carregador. Em um condominio, estacionamento, campus ou frota pequena, alguem precisa responder perguntas bem praticas:
 
-Sem um sistema de controle, a operacao tende a depender de planilhas, leitura manual, cobranca pouco auditavel e baixa visibilidade sobre picos de demanda, falhas e uso indevido. O EV ChargeOps propoe uma camada de software para registrar sessoes, calcular custos e apoiar a gestao da infraestrutura de recarga.
+- quem usou o carregador;
+- quanto foi consumido em kWh;
+- qual tarifa deve ser usada;
+- como dividir esse custo;
+- como explicar a cobranca se alguem questionar.
+
+Se isso for feito so por planilha ou leitura manual, o fechamento mensal fica fragil. Pode haver erro de digitacao, sessao sem identificacao, tarifa aplicada de forma diferente e pouca rastreabilidade. Por isso o EV ChargeOps foi pensado como uma camada de controle: registrar sessoes, calcular o rateio e deixar uma memoria de calculo auditavel.
 
 ## Relacao com o desafio GoodWe
 
-A Sprint 01 considera como camada fisica de referencia o carregador GoodWe HCA G2. Pelas informacoes publicas da GoodWe, o equipamento oferece identificacao por RFID, conectividade por LAN, Wi-Fi, Bluetooth e RS-485, alem de integracao com a plataforma de monitoramento SEMS+.
+Para manter o projeto ligado ao enunciado, a camada fisica considerada e o carregador GoodWe HCA G2. Pelos materiais publicos consultados, o HCA G2 trabalha com identificacao por RFID e conectividade por LAN, Wi-Fi, Bluetooth e RS-485. A GoodWe tambem cita integracao com SEMS+/SEMS Portal.
 
-Como nao ha acesso real ao ambiente SEMS Portal nesta etapa, a decisao tecnica do projeto e tratar a integracao como hipotese de evolucao:
+Mesmo assim, eu nao tratei a integracao GoodWe como pronta. Nesta etapa nao ha acesso a uma API, conta de testes, equipamento fisico ou documentacao privada. Por isso a decisao tecnica da Sprint 01 foi:
 
-- Sprint 01: modelagem do fluxo, dados simulados e importacao CSV de sessoes.
-- Sprint 02: prototipo de ingestao com dados simulados no formato esperado.
-- Evolucao futura: avaliar API SEMS Portal, exportacao da plataforma GoodWe ou leitura local via interfaces disponiveis, conforme documentacao e acesso autorizado.
+- usar CSV e dados simulados para representar sessoes de recarga;
+- modelar os campos que provavelmente seriam necessarios em uma integracao real;
+- deixar SEMS+/SEMS Portal, exportacao da plataforma ou leitura local via RS-485 como evolucao futura;
+- nao inventar endpoint, token, payload ou regra que nao esteja comprovada.
+
+Essa escolha reduz risco na Sprint 02. Antes de automatizar a coleta, o projeto precisa provar que sabe calcular e explicar o rateio.
 
 ## Objetivo do MVP
 
-Criar uma plataforma que ajude operadores de recarga a:
+O MVP deve provar quatro pontos:
 
-- Registrar pontos de recarga e carregadores.
-- Controlar sessoes de recarga por usuario, veiculo e unidade consumidora.
-- Calcular rateio de energia por kWh, tempo, taxa operacional e regras do local.
-- Gerar relatorios para cobranca interna ou repasse financeiro.
-- Apoiar operacao com IA para analise de consumo, previsao de demanda e deteccao de anomalias.
+- cadastrar local, carregador, usuario e veiculo;
+- importar ou registrar sessoes de recarga;
+- calcular o valor por sessao com base em kWh consumido;
+- gerar um demonstrativo simples para auditoria.
+
+A prioridade do rateio por kWh vem do fato de que energia consumida e a medida mais direta para justificar custo. Tempo conectado pode entrar como regra complementar, mas sozinho pode cobrar mal uma sessao lenta, interrompida ou com pouca energia entregue.
 
 ## Sprint 01 - Frentes de pesquisa
 
@@ -38,29 +48,37 @@ Criar uma plataforma que ajude operadores de recarga a:
 
 Opcao de aprofundamento escolhida: analise de mercado.
 
-Resultado: o projeto foi posicionado para cenarios em que a recarga compartilhada precisa de controle operacional e financeiro, como condominios, estacionamentos, campus e frotas leves. A pesquisa indicou tres personas principais: administrador do local, usuario/motorista e responsavel financeiro ou operacional. O detalhamento esta em `docs/pesquisa-mercado.md`.
+Nesta frente, eu comparei os cenarios em que a recarga compartilhada tende a gerar mais atrito: condominios, estacionamentos, campus e frotas leves. O ponto comum entre eles e a necessidade de prestar contas. O administrador quer fechar o mes sem conflito, o motorista quer entender o que pagou e o operador precisa saber se o carregador esta sendo usado direito.
+
+O detalhamento esta em `docs/pesquisa-mercado.md`.
 
 ### Frente 2 - Base Regulatoria e Tecnica
 
 Opcao de aprofundamento escolhida: APIs complementares e premissas de integracao.
 
-Resultado: foram mapeados pontos da ANEEL, Inmetro, normas tecnicas e geracao distribuida que impactam o modelo de cobranca e operacao. Do lado tecnico, o projeto assume o GoodWe HCA G2 como carregador de referencia e documenta RFID, LAN, Wi-Fi, Bluetooth, RS-485 e SEMS+ como pontos de integracao a validar. O detalhamento esta em `docs/base-regulatoria.md`.
+Aqui eu separei dois assuntos que se misturam bastante: regras de operacao e possibilidade tecnica de integrar com o carregador. Foram levantados pontos da ANEEL, Inmetro, Lei 14.300/2022 e normas tecnicas relacionadas. Do lado GoodWe, a pesquisa ficou limitada ao que aparece publicamente sobre HCA G2, RFID, LAN, Wi-Fi, Bluetooth, RS-485 e SEMS+/SEMS Portal.
+
+O detalhamento esta em `docs/base-regulatoria.md`.
 
 ### Frente 3 - Arquitetura e IA
 
 Opcao de aprofundamento escolhida: esquema da base de dados.
 
-Resultado: foi definida uma arquitetura inicial com app web, API backend, banco relacional, modulo de ingestao, motor de rateio, relatorios e modulo de IA. Tambem foi proposto um modelo de dados inicial com entidades como Local, Carregador, Usuario, Veiculo, SessaoRecarga, Tarifa, Rateio e Auditoria. O detalhamento esta em `docs/arquitetura.md`.
+Nesta frente eu desenhei uma arquitetura inicial com app web, API backend, banco de dados, modulo de ingestao, motor de rateio, relatorios e modulo de IA. Tambem defini um modelo de dados inicial com Local, Carregador, Usuario, Veiculo, SessaoRecarga, Tarifa, Rateio e Auditoria.
+
+A IA aparece como apoio, nao como decisor. Ela pode sinalizar anomalias e explicar uma cobranca, mas nao deve alterar valores financeiros sozinha. Em cobranca, o resultado precisa ser conferivel por regra, tarifa e medicao.
+
+O detalhamento esta em `docs/arquitetura.md` e `docs/papel-ia.md`.
 
 ## Diagrama de arquitetura
 
 ![Diagrama de arquitetura](assets/arquitetura.png)
 
-O diagrama tambem esta descrito em Mermaid em `docs/arquitetura.md` para facilitar edicao.
+O mesmo desenho tambem aparece em Mermaid em `docs/arquitetura.md`, porque e mais facil ajustar o fluxo durante a Sprint 02.
 
 ## Modelo de rateio
 
-O modelo de rateio usa como base:
+A formula inicial e propositalmente simples:
 
 ```text
 valor_energia = kwh_consumido * tarifa_kwh
@@ -68,15 +86,25 @@ valor_taxa = taxa_fixa_sessao + (valor_energia * percentual_operacional)
 valor_total = valor_energia + valor_taxa - desconto
 ```
 
-As regras, exemplos e pendencias estao em `docs/modelo-rateio.md`.
+O kWh fica como base porque e o dado mais ligado ao custo de energia. A taxa operacional existe para cobrir itens que a tarifa pura nao cobre, como manutencao, administracao e infraestrutura. As regras, exemplos e pendencias estao em `docs/modelo-rateio.md`.
 
 ## Papel da IA
 
-A IA entra como apoio operacional, nao como fonte de medicao ou decisao financeira automatica. Os usos previstos sao previsao de demanda, deteccao de anomalias, explicacao de cobranca, classificacao de incidentes e recomendacoes operacionais. O detalhamento esta em `docs/papel-ia.md`.
+A IA deve ajudar o administrador a enxergar problemas, nao substituir a regra de cobranca. Os primeiros usos fazem mais sentido em:
+
+- detectar sessao com dado incompleto;
+- apontar consumo fora do padrao;
+- resumir fechamento mensal;
+- explicar a memoria de calculo em linguagem simples;
+- sugerir pontos de manutencao ou investigacao.
+
+Ela nao deve inventar leitura de medidor nem aprovar desconto, taxa ou cobranca automaticamente. Esses pontos precisam ficar sob controle humano porque impactam dinheiro e podem gerar contestacao.
 
 ## Plano para Sprint 02
 
-A Sprint 02 deve transformar a documentacao em prototipo navegavel ou MVP tecnico, priorizando cadastro de carregadores, importacao de sessoes simuladas, calculo de rateio e relatorio auditavel. O plano esta em `sprint-02/plano-desenvolvimento.md`.
+Na Sprint 02, o caminho mais realista e construir um MVP pequeno: cadastro basico, importacao CSV, calculo de rateio e relatorio mensal. A integracao real com GoodWe/SEMS+ fica depois, quando houver acesso tecnico suficiente para validar campos, autenticacao e origem dos dados.
+
+O plano esta em `sprint-02/plano-desenvolvimento.md`.
 
 ## Estrutura
 
@@ -87,7 +115,7 @@ assets/
   data/exemplos-sessoes.csv        Dados ficticios de sessoes de recarga
 docs/
   arquitetura.md                   Desenho funcional e tecnico da solucao
-  base-regulatoria.md              Pontos regulatorios para validar
+  base-regulatoria.md              Pontos regulatorios e tecnicos para validar
   fontes.md                        Fontes usadas e referencias de pesquisa
   modelo-rateio.md                 Regras de rateio e exemplos de calculo
   papel-ia.md                      Como IA entra no produto
@@ -99,16 +127,8 @@ sprint-02/
 
 ## Fontes consultadas
 
-As fontes estao consolidadas em `docs/fontes.md`. A lista inclui ANEEL, Inmetro, Lei 14.300/2022 e materiais publicos da GoodWe sobre HCA G2, datasheet e SEMS+.
-
-## Como revisar este material
-
-1. Comece pelo plano em `sprint-02/plano-desenvolvimento.md`.
-2. Ajuste as premissas de negocio em `docs/modelo-rateio.md`.
-3. Revise os riscos regulatorios em `docs/base-regulatoria.md`.
-4. Troque os dados ficticios em `assets/data/exemplos-sessoes.csv` por dados reais ou simulados mais proximos do seu cenario.
-5. Use `docs/arquitetura.md` como base para desenhar telas, API e banco de dados.
+As fontes estao em `docs/fontes.md`. Mantive links para ANEEL, Inmetro, Lei 14.300/2022 e materiais publicos da GoodWe sobre HCA G2, datasheet e SEMS+.
 
 ## Observacao
 
-Este material nao substitui parecer juridico, regulatorio, contabil ou projeto eletrico assinado por profissional habilitado. A documentacao aponta referencias e decisoes pendentes para validacao.
+Esta documentacao nao substitui parecer juridico, projeto eletrico ou validacao regulatoria. A proposta da Sprint 01 e organizar as premissas e deixar claro o que ainda precisa ser confirmado antes de operar um sistema real.

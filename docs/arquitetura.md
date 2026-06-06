@@ -2,19 +2,19 @@
 
 ## Visao geral
 
-O EV ChargeOps pode ser implementado como uma aplicacao web com API central, banco relacional e modulo de integracao com carregadores. A primeira versao deve priorizar operacao manual ou semi-automatizada, porque isso reduz dependencia de hardware especifico e permite validar o modelo de rateio antes de integrar protocolos, APIs ou conectores proprietarios.
+A arquitetura proposta para o EV ChargeOps e simples de proposito: app web, API backend, banco relacional, modulo de ingestao, motor de rateio, relatorios e uma camada de IA para apoio operacional.
 
-Para alinhar a arquitetura ao desafio GoodWe, a camada fisica de referencia da Sprint 01 e o carregador GoodWe HCA G2. A integracao real depende de acesso autorizado a documentacao, API, exportacao ou ambiente SEMS Portal/SEMS+, entao o MVP deve simular sessoes antes de conectar dados reais.
+Na Sprint 01, eu nao estou assumindo integracao real com carregador. O motivo e pratico: sem acesso ao equipamento GoodWe HCA G2, a uma conta SEMS+/SEMS Portal ou a uma API documentada para testes, qualquer integracao completa seria chute. Por isso a primeira versao deve aceitar CSV e dados simulados. Assim da para validar o fluxo de sessao e rateio antes de automatizar a coleta.
 
 ## Camada GoodWe considerada
 
 | Item | Premissa para o projeto |
 | --- | --- |
-| Carregador | GoodWe HCA G2 como equipamento fisico de referencia. |
-| Identificacao | RFID para associar uso a usuario, veiculo ou unidade. |
-| Conectividade | LAN, Wi-Fi, Bluetooth e RS-485 como interfaces a avaliar. |
-| Integracao | SEMS Portal/SEMS+ ou importacao simulada de sessoes na Sprint 01. |
-| Protocolo local | RS-485/Modbus deve ser validado com documentacao oficial e acesso ao equipamento. |
+| Carregador | GoodWe HCA G2 como equipamento fisico de referencia do desafio. |
+| Identificacao | RFID para relacionar sessao a usuario, veiculo ou unidade. |
+| Conectividade | LAN, Wi-Fi, Bluetooth e RS-485 como interfaces citadas nos materiais publicos. |
+| Integracao | SEMS+/SEMS Portal ou importacao simulada como caminho de evolucao. |
+| Leitura local | RS-485/Modbus so deve ser usado se houver documentacao oficial e acesso ao equipamento. |
 
 ## Componentes
 
@@ -22,21 +22,21 @@ Para alinhar a arquitetura ao desafio GoodWe, a camada fisica de referencia da S
 | --- | --- |
 | App web administrativo | Cadastro de locais, carregadores, usuarios, veiculos e regras de rateio. |
 | API backend | Regras de negocio, autenticacao, calculos, relatorios e integracoes. |
-| Banco de dados | Persistencia de sessoes, medidores, usuarios, tarifas, pagamentos e auditoria. |
-| Modulo de ingestao | Recebe leituras manuais, importacoes CSV, exportacoes SEMS ou eventos de carregadores. |
+| Banco de dados | Guarda sessoes, usuarios, tarifas, calculos, origem dos dados e auditoria. |
+| Modulo de ingestao | Recebe CSV, leitura manual, exportacao SEMS+ ou evento de carregador no futuro. |
 | Motor de rateio | Calcula kWh, custo de energia, taxas e valor final por sessao. |
-| Modulo de IA | Analise de consumo, previsao, anomalias e assistente operacional. |
-| Relatorios | Exporta demonstrativos por periodo, unidade, usuario e carregador. |
+| Modulo de IA | Ajuda a detectar anomalias, resumir operacao e explicar cobrancas. |
+| Relatorios | Gera demonstrativos por periodo, unidade, usuario e carregador. |
 
 ## Fluxo principal
 
-1. Administrador cadastra local, unidade consumidora e carregadores.
+1. Administrador cadastra o local, a unidade consumidora e os carregadores.
 2. Administrador define tarifa, regra de rateio e taxa operacional.
 3. Usuario inicia ou registra uma sessao de recarga.
-4. Sistema recebe leitura inicial e final, ou dado equivalente do carregador.
-5. Motor calcula kWh consumido e valor devido.
-6. Relatorio consolida cobranca por usuario, unidade, veiculo e periodo.
-7. IA pode sinalizar consumo fora do padrao ou demanda futura.
+4. Sistema recebe o dado da sessao por CSV, leitura manual ou integracao futura.
+5. Motor de rateio calcula kWh consumido e valor devido.
+6. Relatorio consolida a cobranca por usuario, unidade, veiculo e periodo.
+7. IA pode apontar dados estranhos ou gerar uma explicacao do calculo.
 
 ## Modelo de dados inicial
 
@@ -53,20 +53,20 @@ Para alinhar a arquitetura ao desafio GoodWe, a camada fisica de referencia da S
 
 ## Regras tecnicas
 
-- Toda sessao deve ter identificador unico.
-- Quando houver RFID, o identificador usado na sessao deve ser guardado ou mapeado com controle de privacidade.
-- Todo calculo de rateio deve guardar a tarifa usada no momento do calculo.
-- Alteracoes em tarifas e regras devem ser versionadas por vigencia.
-- Relatorios financeiros devem ser reproduziveis mesmo quando uma regra futura mudar.
-- A primeira versao deve aceitar importacao CSV para acelerar testes.
+- Toda sessao precisa ter identificador unico.
+- Se houver RFID, o identificador deve ser guardado ou mapeado com cuidado, porque pode virar dado pessoal dependendo do uso.
+- Todo calculo de rateio deve guardar a tarifa usada naquele momento.
+- Alteracoes em tarifa e regra precisam ter vigencia, para nao quebrar relatorio antigo.
+- Relatorio financeiro deve ser reproduzivel mesmo depois de uma regra mudar.
+- A primeira versao deve aceitar importacao CSV para testar o modelo sem depender da integracao GoodWe.
 
 ## Integracoes futuras
 
-- OCPP para comunicacao com carregadores compativeis.
-- GoodWe SEMS Portal/SEMS+, se houver API, exportacao ou acesso autorizado.
-- Leitura local do GoodWe HCA G2 por RS-485/Modbus, se tecnicamente disponivel e documentada.
+- GoodWe SEMS+/SEMS Portal, se houver API, exportacao ou acesso autorizado.
+- Leitura local do GoodWe HCA G2 por RS-485/Modbus, se for tecnicamente disponivel e documentada.
+- OCPP para comunicacao com carregadores compativeis, caso o escopo evolua para outros fabricantes.
 - Gateway de pagamento ou integracao com administradora condominial.
-- API da distribuidora, quando houver disponibilidade e autorizacao.
+- API da distribuidora, se houver disponibilidade e autorizacao.
 - BI externo para dashboards executivos.
 
 ## Diagrama
@@ -88,8 +88,9 @@ flowchart LR
 
 ## Decisoes pendentes
 
-- Definir stack: Python/FastAPI, Node/NestJS ou outra.
-- Definir banco: PostgreSQL recomendado para o MVP.
-- Definir se havera app mobile ou apenas web responsivo.
-- Definir se o MVP tera pagamento real ou apenas demonstrativo de cobranca.
-- Definir padrao minimo de dados que cada carregador deve fornecer.
+- Escolher stack: Python/FastAPI, Node/NestJS ou outra.
+- Confirmar banco de dados. PostgreSQL parece uma boa opcao para comecar, mas ainda precisa ser fechado.
+- Definir se a primeira entrega sera uma interface web ou uma API documentada com dados de exemplo.
+- Decidir se o MVP mostra apenas demonstrativo de cobranca ou se prepara caminho para pagamento real.
+- Definir o formato minimo de sessao que sera aceito no CSV.
+- Confirmar quais dados do GoodWe HCA G2 podem ser obtidos por SEMS+/SEMS Portal ou exportacao.

@@ -1,6 +1,6 @@
 # Fontes
 
-Fontes consultadas em 06/06/2026 para preparar a documentacao inicial.
+Fontes consultadas em 06/06/2026 para preparar a documentacao da Sprint 01.
 
 ## Regulacao e normas
 
@@ -16,14 +16,20 @@ Fontes consultadas em 06/06/2026 para preparar a documentacao inicial.
 - GoodWe - Datasheet HCA G2 Series: https://en.goodwe.com/Ftp/EN/Downloads/Datasheet/GW_HCA-G2_Datasheet-EN.pdf
 - GoodWe - User Manual HCA G2: https://en.goodwe.com/Ftp/EN/Downloads/User%20Manual/GW_HCA-G2_User%20Manual-EN.pdf
 
+## Como usei as fontes
+
+Usei as fontes da ANEEL para entender o enquadramento geral da recarga de veiculos eletricos e a consolidacao da REN 1000/2021. Usei o material do Inmetro para registrar o ponto sobre IEC 61851 e certificacao no momento consultado. A Lei 14.300/2022 entrou porque geracao distribuida pode afetar o custo de energia em locais com solar.
+
+Nos materiais da GoodWe, considerei apenas informacoes publicas sobre HCA G2, RFID, LAN, Wi-Fi, Bluetooth, RS-485 e SEMS+/SEMS Portal. Nao assumi API real, endpoint ou formato de payload porque isso nao apareceu comprovado nas fontes usadas.
+
 ## Temas para ampliar pesquisa
 
 - Regras da distribuidora local para aumento de carga e instalacao de carregadores.
 - Normas ABNT aplicaveis a instalacoes eletricas de baixa tensao.
 - Tributacao sobre cobranca de recarga em cada modelo comercial.
 - Contratos com condominios, estacionamentos e frotas.
-- Politica de privacidade e LGPD para telemetria de veiculos e usuarios.
+- Politica de privacidade e LGPD para telemetria de veiculos, RFID e usuarios.
 
-## Notas de uso
+## Nota de uso
 
-Esta lista e uma base de pesquisa. Antes de transformar o projeto em operacao real, confirme as versoes atuais das normas, resolucoes e orientacoes com fontes oficiais e profissionais habilitados.
+Esta lista e uma base de pesquisa da Sprint 01. Antes de operar um produto real, as versoes das normas, resolucoes e orientacoes precisam ser confirmadas com fontes oficiais e profissionais habilitados.
