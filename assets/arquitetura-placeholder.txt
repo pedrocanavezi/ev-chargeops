@@ -5,7 +5,7 @@ flowchart TD
   A[Administrador] --> B[App Web]
   C[Usuario / Motorista] --> B
   B --> D[API Backend]
-  E[Carregador] --> F[Ingestao de Dados]
+  E[GoodWe HCA G2<br/>RFID LAN Wi-Fi Bluetooth RS-485] --> F[Ingestao de Dados]
   G[CSV / Lancamento Manual] --> F
   F --> D
   D --> H[(Banco de Dados)]

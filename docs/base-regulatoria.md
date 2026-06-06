@@ -53,3 +53,22 @@ Para o MVP, a recomendacao e separar:
 | Seguranca | A instalacao foi projetada e assinada por responsavel tecnico? |
 | Dados pessoais | Ha base legal e aviso de privacidade para coletar dados de uso? |
 | Tributacao | Ha emissao de nota, recibo, boleto condominial ou repasse interno? |
+
+## Base tecnica GoodWe
+
+Para a Sprint 01, o projeto usa o GoodWe HCA G2 como carregador de referencia. A documentacao publica da GoodWe indica uso de RFID para acesso protegido, conectividade LAN, Wi-Fi, Bluetooth e RS-485, alem de integracao com a plataforma SEMS+/SEMS Portal.
+
+Premissas adotadas:
+
+- O RFID pode ser usado como chave de associacao entre motorista, veiculo, unidade e sessao.
+- LAN e Wi-Fi podem servir para conectividade de rede quando houver acesso autorizado.
+- Bluetooth tende a ser mais adequado para configuracao local ou operacao de curta distancia.
+- RS-485 deve ser tratado como possibilidade tecnica para leitura local, dependendo de documentacao oficial e acesso ao equipamento.
+- SEMS Portal/SEMS+ deve ser considerado caminho de integracao futura, mas a Sprint 01 trabalha com CSV e dados simulados.
+
+Pendencias:
+
+- Confirmar se existe API publica, privada ou exportacao acessivel para sessoes do HCA G2.
+- Confirmar campos disponiveis por sessao: inicio, fim, kWh, identificador RFID, status e erros.
+- Validar politica de privacidade para dados coletados por RFID e telemetria.
+- Validar se a leitura usada para cobranca tem precisao e rastreabilidade suficientes para o modelo escolhido.

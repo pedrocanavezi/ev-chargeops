@@ -10,6 +10,12 @@ Fontes consultadas em 06/06/2026 para preparar a documentacao inicial.
 - Inmetro - FAQ sobre carregadores de veiculos eletricos e IEC 61851: https://www.gov.br/inmetro/pt-br/acesso-a-informacao/perguntas-frequentes/avaliacao-da-conformidade/aparelhos-eletrodomesticos-e-similares/carregadores-de-veiculos-eletricos-estao-no-escopo-da-portaria-inmetro-ndeg-148-de-2022-carregadores-de-veiculos-eletricos-devem-ser-certificados
 - Planalto - Lei 14.300/2022: https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/L14300.htm
 
+## GoodWe e desafio tecnico
+
+- GoodWe - HCA G2 Series AC Charger: https://en.goodwe.com/hca-g2
+- GoodWe - Datasheet HCA G2 Series: https://en.goodwe.com/Ftp/EN/Downloads/Datasheet/GW_HCA-G2_Datasheet-EN.pdf
+- GoodWe - User Manual HCA G2: https://en.goodwe.com/Ftp/EN/Downloads/User%20Manual/GW_HCA-G2_User%20Manual-EN.pdf
+
 ## Temas para ampliar pesquisa
 
 - Regras da distribuidora local para aumento de carga e instalacao de carregadores.
