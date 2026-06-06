@@ -22,12 +22,13 @@ assets/
   data/exemplos-sessoes.csv        Dados ficticios de sessoes de recarga
 docs/
   arquitetura.md                   Desenho funcional e tecnico da solucao
-  base-regulatoria.md              Pontos regulatórios para validar
+  base-regulatoria.md              Pontos regulatorios para validar
   fontes.md                        Fontes usadas e referencias de pesquisa
   modelo-rateio.md                 Regras de rateio e exemplos de calculo
   papel-ia.md                      Como IA entra no produto
   pesquisa-mercado.md              Contexto de mercado e personas
 sprint-02/
+  README.md                        Guia rapido da Sprint 02
   plano-desenvolvimento.md         Plano pratico da Sprint 02
 ```
 
@@ -35,7 +36,7 @@ sprint-02/
 
 1. Comece pelo plano em `sprint-02/plano-desenvolvimento.md`.
 2. Ajuste as premissas de negocio em `docs/modelo-rateio.md`.
-3. Revise os riscos regulatórios em `docs/base-regulatoria.md`.
+3. Revise os riscos regulatorios em `docs/base-regulatoria.md`.
 4. Troque os dados ficticios em `assets/data/exemplos-sessoes.csv` por dados reais ou simulados mais proximos do seu cenario.
 5. Use `docs/arquitetura.md` como base para desenhar telas, API e banco de dados.
 
@@ -49,4 +50,4 @@ O MVP deve provar tres coisas:
 
 ## Observacao
 
-Este material nao substitui parecer juridico, regulatorio, contábil ou projeto eletrico assinado por profissional habilitado. A documentacao aponta referencias e decisoes pendentes para validacao.
+Este material nao substitui parecer juridico, regulatorio, contabil ou projeto eletrico assinado por profissional habilitado. A documentacao aponta referencias e decisoes pendentes para validacao.
